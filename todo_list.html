@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todolist</title>
+    <style>
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+
+        .border:hover {
+            border: 2px solid rgb(164, 236, 119);
+            cursor: pointer;
+        }
+
+        .inputed_value,
+        .date_selector {
+            border-radius: 5px;
+            padding: 8px 14px;
+
+        }
+
+        .add_button {
+            border: none;
+            border-radius: 5px;
+            padding: 8px 39px;
+            font-family: monospace;
+            font-weight: bolder;
+            background-color: rgb(206, 227, 122);
+
+
+        }
+
+        .delet_button {
+            border: none;
+            border-radius: 5px;
+            padding: 8px 10px;
+            font-family: monospace;
+            font-weight: bold;
+            background-color: rgb(252, 153, 153);
+            margin-bottom: 1rem;
+        }
+
+        .display_result {
+            display: grid;
+            grid-template-columns: 198px 149px 100px;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <p>
+    <h1>To Do List</h1>
+    </p>
+
+    <input placeholder="Enter Todolist" class="inputed_value border">
+
+    <input type="date" placeholder="date" class="date_selector border">
+
+    <button class="add_button js-add-todo-button">ADD</button>
+
+    <br />
+    <br />
+
+    <!-- Todo list display div -->
+    <div class="display_result"></div>
+
+
+
+    <script>
+
+        const Todo_list = [
+
+        ]
+
+        rendertodolist();
+
+        function rendertodolist() {
+            let final_todo_list = '';
+
+            for (let i = -0; i < Todo_list.length; i++) {
+                const looped_resultobj = Todo_list[i];
+
+                const todotask = looped_resultobj.task_list;
+
+                const todo_date = looped_resultobj.datee;
+
+                //html code wich apperas on webpage
+                let html_code = `
+
+                    <div>${todotask}</div>
+
+                    <div>${todo_date}</div>
+
+                    <button   class='delet_button  JS-delete-todo-button'>Delete</button> `;
+                final_todo_list += html_code;
+            }
+            document.querySelector('.display_result').innerHTML = final_todo_list;
+
+            // Eventlistener to DeletButton
+            document.querySelectorAll('.JS-delete-todo-button')
+
+                .forEach((delet_button, i) => {
+                    delet_button.addEventListener('click', () => {
+                        Todo_list.splice(i, 1);
+                        rendertodolist();
+                    });
+                });
+
+        }
+
+
+        //Eventlistener to Addbuttton
+        document.querySelector('.js-add-todo-button')
+            .addEventListener('click', () => {
+                adding_the_todolist();
+            });
+        // ========================================================
+
+
+        function adding_the_todolist() {
+            //acessing the input box with javascript and storing it into a varibale
+            const entering_todolist = document.querySelector('.inputed_value');
+
+            //now acessing the value entered in the placeholder ans saving the entered value in the variable called todo_list_entered
+            const todo_list_entered = entering_todolist.value;
+
+
+            //adding the feature when add is clicked time should be displayed
+            const date_get_element = document.querySelector('.date_selector');
+            //get the date we selected and storing in a variable called data_store_vari
+            const date_store_vari = date_get_element.value;
+
+
+
+
+            //pushing the enterd todolist into above array
+            Todo_list.push({
+                task_list: todo_list_entered,
+                datee: date_store_vari
+            });
+
+            //printong the result of the palce holder
+            // console.log(todo_list_entered);
+
+
+
+            //reseting the palceholder after adding the todolost i.e to blank
+            entering_todolist.value = '';
+
+            rendertodolist();
+
+
+        }
+        
+// Event Listener to addbutton for enter keydown
+        document.querySelector('.inputed_value')
+        .addEventListener('keydown',()=>{
+            keyboard_evnt();
+        });
+
+        function keyboard_evnt() {
+            const evntlstn = event.key;
+            if (evntlstn === 'Enter') {
+                adding_the_todolist();
+            }
+        }
+
+    </script>
+</body>
+
+</html>
